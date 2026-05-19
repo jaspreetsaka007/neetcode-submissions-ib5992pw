@@ -1,14 +1,18 @@
 class Solution {
-    fun maxProduct(nums: IntArray): Int {
-        var res = nums[0]
-        var curMin = 1
-        var curMax = 1
-        for (num in nums) {
-            val tmp = curMax * num
-            curMax = maxOf(num * curMax, maxOf(num * curMin, num))
-            curMin = minOf(tmp, minOf(num * curMin, num))
-            res = maxOf(res, curMax)
+    fun wordBreak(s: String, wordDict: List<String>): Boolean {
+        val dp = BooleanArray(s.length + 1)
+        dp[s.length] = true
+
+        for (i in s.length - 1 downTo 0) {
+            for (w in wordDict) {
+                if (i + w.length <= s.length &&
+                    s.substring(i, i + w.length) == w) {
+                    dp[i] = dp[i + w.length]
+                }
+                if (dp[i]) break
+            }
         }
-        return res
+
+        return dp[0]
     }
 }
